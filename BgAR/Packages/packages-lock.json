@@ -1,5 +1,13 @@
 {
   "dependencies": {
+    "com.easyar.sense": {
+      "version": "file:C:/Users/gronr/Desktop/EasyARSenseUnityPlugin_4.6.3+3029.cb846598/com.easyar.sense-4.6.3+3029.cb846598.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      }
+    },
     "com.unity.collab-proxy": {
       "version": "2.2.0",
       "depth": 0,
