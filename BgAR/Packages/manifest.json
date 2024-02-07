@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.easyar.sense": "file:C:/Users/gronr/Desktop/EasyARSenseUnityPlugin_4.6.3+3029.cb846598/com.easyar.sense-4.6.3+3029.cb846598.tgz",
+    "com.easyar.sense": "file:C:/Users/gronroos.alexander/Desktop/EasyARSenseUnityPlugin_4.6.3+3029.cb846598/com.easyar.sense-4.6.3+3029.cb846598.tgz",
     "com.unity.collab-proxy": "2.2.0",
     "com.unity.feature.development": "1.0.2",
     "com.unity.timeline": "1.8.6",
