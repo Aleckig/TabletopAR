@@ -5,9 +5,10 @@ using UnityEngine;
 public class GetDiceValue : MonoBehaviour
 {
     // Start is called before the first frame update
+    private GameManager gameManager;
     void Start()
     {
-        
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -15,6 +16,8 @@ public class GetDiceValue : MonoBehaviour
     {
         
     }
+
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -41,5 +44,6 @@ public class GetDiceValue : MonoBehaviour
                 break;
         }
         Debug.Log(gameObject.name + " " + diceValue);
+        gameManager.IncreaseTotalDiceValue(diceValue);
     }
 }
