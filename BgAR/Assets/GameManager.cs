@@ -43,21 +43,13 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator StartMove()
     {
-        buyButton.SetActive(false);
         Vector3 currentPos = player.transform.position;
         Vector3 startingPosition = player.transform.position;
         float totalMovementTime = 0.3f;
         float currentMovementTime = 0f;
         yield return new WaitForSeconds(0.5f);
-        //foreach (Transform attachPoint in attachPointsList.GetRange(0,5))
-        //{
-        //    Debug.Log(attachPoint.position);
-        //}
-        //foreach (Transform attachPoint in attachPointsList.GetRange(1, totalDiceValue))
 
-        //attachPointsList.GetRange(currentSpot, totalDiceValue + currentSpot + 1).Count
-
-        for (int i=currentSpot+1; i < currentSpot + totalDiceValue + 1; i++)
+        for (int i = currentSpot + 1; i < currentSpot + totalDiceValue + 1; i++)
         {
             if (i > 39)
             {
@@ -65,28 +57,40 @@ public class GameManager : MonoBehaviour
                 totalDiceValue = totalDiceValue - (40 - currentSpot);
                 currentSpot = 0;
             }
-            //Debug.Log("Value of i is" + i);
+
             while (Vector3.Distance(currentPos, attachPointsList[i].position) > 0)
             {
                 currentMovementTime += Time.deltaTime;
-                player.transform.position = Vector3.Lerp(startingPosition, attachPointsList[i].position, currentMovementTime / totalMovementTime);
+
+                // Use BezierCurve for bouncing movement
+                float bounceT = Mathf.PingPong(currentMovementTime, 1f);
+                Vector3 targetPos = BezierCurve(startingPosition, startingPosition + Vector3.up * 2f, attachPointsList[i].position, bounceT);
+
+                player.transform.position = Vector3.Lerp(startingPosition, targetPos, currentMovementTime / totalMovementTime);
                 currentPos = player.transform.position;
                 yield return null;
             }
+
             startingPosition = player.transform.position;
             currentMovementTime = 0f;
-            yield return new WaitForSeconds(0.04f);
-            //Debug.Log("Coroutine was called");
-            Debug.Log("Total dice value is" + totalDiceValue);
+            yield return new WaitForSeconds(0.03f);
         }
+
         currentSpot += totalDiceValue;
-        if (attachPointsList[currentSpot].tag == "Buyable")
-        {
-            buyButton.SetActive(true);
-        }
-        //if (currentSpot > 40)
-        //{
-        //    currentSpot -= 40;
-        //}
+    }
+
+    // ... (existing code)
+
+    Vector3 BezierCurve(Vector3 p0, Vector3 p1, Vector3 p2, float t)
+    {
+        float u = 1 - t;
+        float tt = t * t;
+        float uu = u * u;
+
+        Vector3 p = uu * p0;
+        p += 2 * u * t * p1;
+        p += tt * p2;
+
+        return p;
     }
 }
