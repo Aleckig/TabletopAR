@@ -1493,6 +1493,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dice1: {fileID: 7117227800417249543}
   dice2: {fileID: 7047932252953410149}
+  button: {fileID: 0}
+  canThrow: 0
 --- !u!1001 &366289568856614521
 PrefabInstance:
   m_ObjectHideFlags: 0
