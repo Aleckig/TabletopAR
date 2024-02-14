@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
     [SerializeField] private GameObject AttachPoints;
-    private List<Transform> attachPointsList = new ();
+    private List<Transform> attachPointsList = new List<Transform>();
     private int totalDiceValue = 0;
     public GameObject player;
     public int currentSpot;
     public GameObject buyButton;
     [SerializeField] private ThrowDice throwDice;
+    public float bounceHeight = 1f;
+    public float bounceFrequency = 2f;
+
     void Start()
     {
         currentSpot = 0;
@@ -21,32 +25,32 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //Debug.Log(totalDiceValue);
+        // Debug.Log(totalDiceValue);
     }
 
     public void IncreaseTotalDiceValue()
     {
         IncreaseTotalDiceValue(-totalDiceValue);
     }
+
     public void IncreaseTotalDiceValue(int value)
     {
         totalDiceValue += value;
     }
+
     public void StartPlayerMovement()
     {
         IncreaseTotalDiceValue();
         throwDice.Throw();
         StartCoroutine(StartMove());
     }
+
     private IEnumerator StartMove()
     {
         Vector3 currentPos = player.transform.position;
-        Vector3 startingPosition = player.transform.position;
-        float totalMovementTime = 0.3f;
-        float currentMovementTime = 0f;
+
         yield return new WaitForSeconds(0.5f);
 
         for (int i = currentSpot + 1; i < currentSpot + totalDiceValue + 1; i++)
@@ -58,28 +62,29 @@ public class GameManager : MonoBehaviour
                 currentSpot = 0;
             }
 
-            while (Vector3.Distance(currentPos, attachPointsList[i].position) > 0)
+            Vector3 startingPosition = player.transform.position;
+            Vector3 targetPosition = attachPointsList[i].position;
+
+            float currentMovementTime = 0f;
+            float totalMovementTime = 0.3f; // You need to define totalMovementTime
+
+            while (currentMovementTime < totalMovementTime)
             {
                 currentMovementTime += Time.deltaTime;
 
-                // Use BezierCurve for bouncing movement
-                float bounceT = Mathf.PingPong(currentMovementTime, 1f);
-                Vector3 targetPos = BezierCurve(startingPosition, startingPosition + Vector3.up * 2f, attachPointsList[i].position, bounceT);
+                float bounceT = Mathf.Sin(currentMovementTime * Mathf.PI * bounceFrequency / totalMovementTime);
+                Vector3 intermediatePos = Vector3.Lerp(startingPosition, targetPosition, currentMovementTime / totalMovementTime);
+                intermediatePos.y += Mathf.Abs(bounceT) * bounceHeight;
 
-                player.transform.position = Vector3.Lerp(startingPosition, targetPos, currentMovementTime / totalMovementTime);
-                currentPos = player.transform.position;
+                player.transform.position = intermediatePos;
                 yield return null;
             }
 
-            startingPosition = player.transform.position;
-            currentMovementTime = 0f;
             yield return new WaitForSeconds(0.03f);
         }
 
         currentSpot += totalDiceValue;
     }
-
-    // ... (existing code)
 
     Vector3 BezierCurve(Vector3 p0, Vector3 p1, Vector3 p2, float t)
     {
@@ -94,3 +99,6 @@ public class GameManager : MonoBehaviour
         return p;
     }
 }
+
+   
+
