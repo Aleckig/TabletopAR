@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ThrowDice : MonoBehaviour
 {
@@ -12,12 +13,26 @@ public class ThrowDice : MonoBehaviour
     [SerializeField] GameObject button;
     public bool canThrow;
 
+    // Add these lines
+    [SerializeField] AudioClip diceSound;
+    private AudioSource audioSource;
+    [SerializeField] Button throwButton;
+
+    
+
     // Start is called before the first frame update
     void Start()
     {
         m_Rigidbody = dice1.GetComponent<Rigidbody>();
         m_Rigidbody2 = dice2.GetComponent<Rigidbody>();
         canThrow = true;
+
+        // Add these lines
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = diceSound;
+
+        // Add an onClick listener to the button
+        throwButton.onClick.AddListener(Throw);
     }
 
     public void Throw()
@@ -29,7 +44,11 @@ public class ThrowDice : MonoBehaviour
             m_Rigidbody2.AddForce(transform.up * 100f);
             m_Rigidbody.AddTorque(RandomXYZ());
             m_Rigidbody2.AddTorque(RandomXYZ());
+            // Play the dice sound
+            audioSource.Play();
             StartCoroutine(StartRoll());
+
+            
         }
     }
 

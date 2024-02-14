@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     public float bounceHeight = 1f;
     public float bounceFrequency = 2f;
 
+    [SerializeField] private AudioClip bounceSound; // Add this line
+    private AudioSource audioSource; // Add this line
+
     void Start()
     {
         currentSpot = 0;
@@ -23,6 +26,9 @@ public class GameManager : MonoBehaviour
         {
             attachPointsList.Add(point);
         }
+        // Add these lines
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.clip = bounceSound;
     }
 
     void Update()
@@ -77,8 +83,15 @@ public class GameManager : MonoBehaviour
                 intermediatePos.y += Mathf.Abs(bounceT) * bounceHeight;
 
                 player.transform.position = intermediatePos;
+
+                // Play the bounce sound here
+                if (Mathf.Abs(bounceT) < 0.01f) // Play sound only when the object is at its peak
+                {
+                    audioSource.Play();
+                }
                 yield return null;
             }
+            
 
             yield return new WaitForSeconds(0.03f);
         }
