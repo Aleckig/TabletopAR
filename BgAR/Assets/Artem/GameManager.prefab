@@ -49,5 +49,6 @@ MonoBehaviour:
   currentSpot: 0
   buyButton: {fileID: 0}
   throwDice: {fileID: 0}
-  bounceHeight: 0.05
+  bounceHeight: 0.03
   bounceFrequency: 1
+  prefabFlag: {fileID: 0}
