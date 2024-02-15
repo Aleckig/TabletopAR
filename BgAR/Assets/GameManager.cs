@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
     {
         Vector3 currentPos = player.transform.position;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.8f);
 
         for (int i = currentSpot + 1; i < currentSpot + totalDiceValue + 1; i++)
         {

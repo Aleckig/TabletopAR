@@ -11,6 +11,8 @@ public class ThrowDice : MonoBehaviour
     [SerializeField] GameObject dice1;
     [SerializeField] GameObject dice2;
     [SerializeField] GameObject button;
+    [SerializeField] Transform diceAnchor1;
+    [SerializeField] Transform diceAnchor2;
     public bool canThrow;
 
     // Add these lines
@@ -70,8 +72,8 @@ public class ThrowDice : MonoBehaviour
         yield return new WaitForSeconds(4f);
         dice1.SetActive(false);
         dice2.SetActive(false);
-        dice1.transform.position = new Vector3(0.118799999f, 0.0189999994f, -0.0186000001f);
-        dice2.transform.position = new Vector3(0.195999995f, 0.0218000002f, -0.0155999996f);
+        dice1.transform.position = diceAnchor1.position;
+        dice2.transform.position = diceAnchor2.position;
         canThrow = true;
         button.SetActive(true);
         //Reset position of dices
