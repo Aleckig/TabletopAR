@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject AttachPoints;
@@ -15,6 +13,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ThrowDice throwDice;
     public float bounceHeight = 1f;
     public float bounceFrequency = 2f;
+    [SerializeField]
+    private GameObject prefabFlag;
 
     void Start()
     {
@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
         }
 
         currentSpot += totalDiceValue;
+        CheckBuyField();
     }
 
     Vector3 BezierCurve(Vector3 p0, Vector3 p1, Vector3 p2, float t)
@@ -98,7 +99,24 @@ public class GameManager : MonoBehaviour
 
         return p;
     }
+    private void CheckBuyField()
+    {
+        if (attachPointsList[currentSpot].CompareTag("Buyable"))
+        {
+            buyButton.SetActive(true);
+            return;
+        }
+        buyButton.SetActive(false);
+    }
+    public void BuyField()
+    {
+        attachPointsList[currentSpot].tag = "Owned";
+        attachPointsList[currentSpot].GetChild(0).tag = "Player1";
+        attachPointsList[currentSpot].GetChild(0).gameObject.SetActive(true);
+
+        CheckBuyField();
+    }
 }
 
-   
+
 
